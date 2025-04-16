@@ -33,14 +33,36 @@ class ProductDetailAPIView(generics.RetrieveAPIView):
 
 product_detail_view = ProductDetailAPIView.as_view()
 
-
-class ProductListAPIView(generics.RetrieveAPIView):
-
-    '''
-     Not using this method. Just a possibility of separating list and create. 
-    '''
+class ProductUpdateAPIView(generics.UpdateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+    lookup_field = 'pk'
+
+    def perform_update(self, serializer):
+        instance = serializer.save()
+        if not instance.content:
+            instance.content = instance.title
+
+
+product_update_view = ProductUpdateAPIView.as_view()
+
+class ProductDeleteAPIView(generics.DestroyAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+    lookup_field = 'pk'
+
+    def perform_destroy(self, instance):
+       super().perform_destroy(instance)
+
+product_delete_view = ProductDeleteAPIView.as_view()
+
+# class ProductListAPIView(generics.RetrieveAPIView):
+
+#     '''
+#      Not using this method. Just a possibility of separating list and create. 
+#     '''
+#     queryset = Product.objects.all()
+#     serializer_class = ProductSerializer
     
 
 
