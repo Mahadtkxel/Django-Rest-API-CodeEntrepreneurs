@@ -9,7 +9,7 @@ from products.models import Product
 from products.serializers import ProductSerializer
 
 
-@api_view(["POST"])
+@api_view(["GET","POST"])
 def api_home(request, *args, **kwargs):
     instance = Product.objects.all().order_by('?').first()
     data = {}
